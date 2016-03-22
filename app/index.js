@@ -14,7 +14,7 @@ var ReactPrototypeGenerator = yeoman.Base.extend({
     var done = this.async();
 
     this.log(yosay(
-      'You\'re using the fantastic ' + chalk.red('react-prototype') + ' generator. #hackteam'
+      'You\'re using the fantastic #hackteam\'s' + chalk.purple('react-prototype') + ' generator.'
     ));
 
     var prompts = [{
@@ -63,7 +63,6 @@ var ReactPrototypeGenerator = yeoman.Base.extend({
 
     this._copyTpl('app/index.html', 'app/index.html');
     this._copy('app/favicon.ico', 'app/favicon.ico');
-    this._copy('app/robots.txt', 'app/robots.txt');
 
     this._copyTpl('app/main.less', 'app/styles/main.less');
     this._copy('app/app.js', 'app/scripts/app.js');
