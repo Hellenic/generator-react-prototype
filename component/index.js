@@ -2,9 +2,9 @@
 
 var yeoman = require('yeoman-generator');
 
-var ComponentGenerator = yeoman.generators.Base.extend({
+var ComponentGenerator = yeoman.Base.extend({
   constructor: function() {
-    yeoman.generators.Base.apply(this, arguments);
+    yeoman.Base.apply(this, arguments);
 
     this.argument('componentName', { type: String, defaults: 'Component' });
     this.pkg = require('../package.json');
@@ -18,14 +18,6 @@ var ComponentGenerator = yeoman.generators.Base.extend({
       this.destinationPath('app/scripts/components/' + componentFileName + '.js'),
       this
     );
-
-    if (this.config.get('includeJest')) {
-      this.fs.copyTpl(
-        this.templatePath('component-test.js'),
-        this.destinationPath('app/scripts/components/__tests__/' + componentFileName + '-test.js'),
-        this
-      );
-    }
   }
 });
 

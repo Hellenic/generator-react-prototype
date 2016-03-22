@@ -3,8 +3,9 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
+var _ = require('underscore.string');
 
-var React6Generator = yeoman.generators.Base.extend({
+var ReactPrototypeGenerator = yeoman.Base.extend({
   initializing: function () {
     this.pkg = require('../package.json');
   },
@@ -13,7 +14,7 @@ var React6Generator = yeoman.generators.Base.extend({
     var done = this.async();
 
     this.log(yosay(
-      'You\'re using the fantastic ' + chalk.red('React-6') + ' generator. Write React apps in es6 now!'
+      'You\'re using the fantastic ' + chalk.red('react-prototype') + ' generator. #hackteam'
     ));
 
     var prompts = [{
@@ -27,16 +28,8 @@ var React6Generator = yeoman.generators.Base.extend({
       name: 'features',
       message: 'What more would you like?',
       choices: [{
-        name: 'Bootstrap',
-        value: 'includeBootstrap',
-        checked: true
-      }, {
-        name: 'Modernizr',
-        value: 'includeModernizr',
-        checked: true
-      }, {
-        name: 'Jest for unit tests',
-        value: 'includeJest',
+        name: 'Semantic UI',
+        value: 'includeSemantic',
         checked: true
       }]
     }];
@@ -48,20 +41,23 @@ var React6Generator = yeoman.generators.Base.extend({
 
       function hasFeature(feat) { return features.indexOf(feat) !== -1; }
 
-      this.includeBootstrap = hasFeature('includeBootstrap');
-      this.includeModernizr = hasFeature('includeModernizr');
-      this.includeJest = hasFeature('includeJest');
+      this.includeSemantic = hasFeature('includeSemantic');
 
-      this.config.set('includeJest', this.includeJest);
       done();
     }.bind(this));
+  },
+
+  getContext: function() {
+    return {
+      _: _,
+      projectName: this.projectName,
+      semantic: this.includeSemantic
+    };
   },
 
   writing: function() {
     this._copyTpl('_package.json', 'package.json');
     this._copyTpl('_gulpfile.js', 'gulpfile.js');
-    this._copyTpl('_bower.json', 'bower.json');
-    this._copy('bowerrc', '.bowerrc');
     this._copy('gitignore', '.gitignore');
     this._copy('editorconfig', '.editorconfig');
 
@@ -69,12 +65,9 @@ var React6Generator = yeoman.generators.Base.extend({
     this._copy('app/favicon.ico', 'app/favicon.ico');
     this._copy('app/robots.txt', 'app/robots.txt');
 
-    this._copyTpl('app/main.scss', 'app/styles/main.scss');
+    this._copyTpl('app/main.less', 'app/styles/main.less');
     this._copy('app/app.js', 'app/scripts/app.js');
     this._copyTpl('app/home.js', 'app/scripts/components/home.js');
-
-    if (this.includeJest)
-      this._copy('app/home-test.js', 'app/scripts/components/__tests__/home-test.js');
   },
 
   _copy: function(from, to) {
@@ -82,14 +75,15 @@ var React6Generator = yeoman.generators.Base.extend({
   },
 
   _copyTpl: function(from, to) {
-    this.fs.copyTpl(this.templatePath(from), this.destinationPath(to), this);
+    this.fs.copyTpl(this.templatePath(from), this.destinationPath(to), this.getContext());
   },
 
   install: function() {
     this.installDependencies({
-      skipInstall: this.options['skip-install']
+      skipInstall: this.options['skip-install'],
+      bower: false
     });
   }
 });
 
-module.exports = React6Generator;
+module.exports = ReactPrototypeGenerator;

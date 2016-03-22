@@ -6,10 +6,8 @@ var sync       = $.sync(gulp).sync;
 var del        = require('del');
 var browserify = require('browserify');
 var watchify   = require('watchify');
-var source     = require('vinyl-source-stream');<% if (includeJest) { %>
-var path       = require('path');
-
-require('harmonize')();<% } %>
+var source     = require('vinyl-source-stream');
+var less       = require('gulp-less');
 
 var bundler = {
   w: null,
@@ -36,15 +34,9 @@ var bundler = {
 };
 
 gulp.task('styles', function() {
-  return $.rubySass('app/styles/main.scss', {
-      style: 'expanded',
-      precision: 10,
-      loadPath: ['app/bower_components']
-    })
-    .on('error', $.util.log.bind($.util, 'Sass Error'))
-    .pipe($.autoprefixer('last 1 version'))
-    .pipe(gulp.dest('dist/styles'))
-    .pipe($.size());
+  return gulp.src('app/styles/**/*.less')
+  .pipe(less())
+  .pipe(gulp.dest('dist/styles/'));
 });
 
 gulp.task('scripts', function() {
@@ -73,12 +65,6 @@ gulp.task('images', function() {
     .pipe($.size());
 });
 
-gulp.task('fonts', function() {
-  return gulp.src(['app/fonts/**/*'<% if (includeBootstrap) { %>, 'app/bower_components/bootstrap-sass-official/assets/fonts/**/*'<% } %>])
-    .pipe(gulp.dest('dist/fonts'))
-    .pipe($.size());
-});
-
 gulp.task('extras', function () {
   return gulp.src(['app/*.txt', 'app/*.ico'])
     .pipe(gulp.dest('dist/'))
@@ -92,16 +78,7 @@ gulp.task('serve', function() {
       port: 9000
     }));
 });
-<% if (includeJest) { %>
-gulp.task('jest', function () {
-  var nodeModules = path.resolve('./node_modules');
-  return gulp.src('app/scripts/**/__tests__')
-    .pipe($.jest({
-      scriptPreprocessor: nodeModules + '/babel-jest',
-      unmockedModulePathPatterns: [nodeModules + '/react']
-    }));
-});
-<% } %>
+
 gulp.task('set-production', function() {
   process.env.NODE_ENV = 'production';
 });
@@ -124,7 +101,7 @@ gulp.task('minify', ['minify:js', 'minify:css']);
 
 gulp.task('clean', del.bind(null, 'dist'));
 
-gulp.task('bundle', ['html', 'styles', 'scripts', 'images', 'fonts', 'extras']);
+gulp.task('bundle', ['html', 'styles', 'scripts', 'images', 'extras']);
 
 gulp.task('clean-bundle', sync(['clean', 'bundle']));
 
@@ -133,15 +110,12 @@ gulp.task('build', ['clean-bundle'], bundler.stop.bind(bundler));
 gulp.task('build:production', sync(['set-production', 'build', 'minify']));
 
 gulp.task('serve:production', sync(['build:production', 'serve']));
-<% if (includeJest) { %>
-gulp.task('test', ['jest']);
-<% } %>
+
 gulp.task('default', ['build']);
 
 gulp.task('watch', sync(['clean-bundle', 'serve']), function() {
   bundler.watch();
   gulp.watch('app/*.html', ['html']);
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch('app/styles/**/*.less', ['styles']);
   gulp.watch('app/images/**/*', ['images']);
-  gulp.watch('app/fonts/**/*', ['fonts']);
 });

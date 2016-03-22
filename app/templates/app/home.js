@@ -6,10 +6,8 @@ export default class Home extends Component {
     this.state = {
       items: [
         'Browserify',
-        'Babel'<% if (includeBootstrap) { %>,
-        'Bootstrap'<% } if (includeModernizr) { %>,
-        'Modernizr'<% } if (includeJest) { %>,
-        'Jest'<% } %>
+        'Babel',
+        'Semantic UI'
       ]
     };
   }

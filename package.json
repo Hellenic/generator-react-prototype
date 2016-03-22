@@ -1,26 +1,24 @@
 {
-  "name": "generator-react-6",
-  "version": "0.2.0",
-  "description": "A Yeoman Generator for facebook's React framework. It includes gulp, browserify, livereload and babel to transpile es6 codes to es5.",
+  "name": "generator-react-prototype",
+  "version": "0.0.1",
+  "description": "A Yeoman Generator generator for quick prototypes, demos and PoCs. Comes with React, React-Router, Gulp, ES6, Browserify, etc.",
   "license": "MIT",
   "main": "app/index.js",
-  "repository": "darklight721/generator-react-6",
+  "repository": "Hellenic/generator-react-prototype",
   "author": {
-    "name": "Roy Evan Sia",
-    "email": "roy.evan.sia@gmail.com",
-    "url": "https://github.com/darklight721"
+    "name": "Hannu Kärkkäinen",
+    "email": "hannu.karkkainen@gmail.com",
+    "url": "https://github.com/Hellenic"
   },
   "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "mocha"
+    "node": ">=5.8.0"
   },
   "files": [
     "app"
   ],
   "keywords": [
     "yeoman-generator",
+    "prototype",
     "react",
     "browserify",
     "gulp",
@@ -28,14 +26,12 @@
     "babel"
   ],
   "dependencies": {
-    "yeoman-generator": "^0.18.0",
-    "chalk": "^0.5.0",
-    "yosay": "^0.3.0"
-  },
-  "devDependencies": {
-    "mocha": "*"
+    "chalk": "^1.1.0",
+    "underscore.string": "^3.3.4",
+    "yeoman-generator": "^0.22.0",
+    "yosay": "^1.1.0"
   },
   "peerDependencies": {
-    "yo": ">=1.0.0"
+    "yo": ">=1.7.0"
   }
 }
