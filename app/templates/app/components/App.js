@@ -11,6 +11,7 @@ class App extends Component {
         <div className="ui pointing seven large item menu">
           <IndexLink to="/" className="item" activeClassName="active">Main</IndexLink>
           <Link to="/graphs" className="item" activeClassName="active">Graphs</Link>
+          <Link to="/ws" className="item" activeClassName="active">Websockets</Link>
           <Link to="/about" className="item" activeClassName="active">About</Link>
         </div>
         <div>
