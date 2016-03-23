@@ -8,22 +8,25 @@ var browserify = require('browserify');
 var watchify   = require('watchify');
 var source     = require('vinyl-source-stream');
 var less       = require('gulp-less');
+var cleanCSS   = require('gulp-clean-css');
+var useref     = require('gulp-useref');
 
 var bundler = {
   w: null,
   init: function() {
     this.w = watchify(browserify({
-      entries: ['./app/scripts/app.js'],
+      entries: ['./app/app.js'],
       insertGlobals: true,
       cache: {},
       packageCache: {}
     }));
   },
   bundle: function() {
+    $.util.log('Bundle updated!');
     return this.w && this.w.bundle()
       .on('error', $.util.log.bind($.util, 'Browserify Error'))
       .pipe(source('app.js'))
-      .pipe(gulp.dest('dist/scripts'));
+      .pipe(gulp.dest('dist/scripts/'));
   },
   watch: function() {
     this.w && this.w.on('update', this.bundle.bind(this));
@@ -34,7 +37,7 @@ var bundler = {
 };
 
 gulp.task('styles', function() {
-  return gulp.src('app/styles/**/*.less')
+  return gulp.src('app/styles/main.less')
   .pipe(less())
   .pipe(gulp.dest('dist/styles/'));
 });
@@ -45,28 +48,25 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('html', function() {
-  var assets = $.useref.assets();
   return gulp.src('app/*.html')
-    .pipe(assets)
-    .pipe(assets.restore())
-    .pipe($.useref())
+    .pipe(useref())
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });
 
 gulp.task('images', function() {
   return gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
-      optimizationLevel: 3,
-      progressive: true,
-      interlaced: true
-    })))
+    // .pipe($.cache($.imagemin({
+    //   optimizationLevel: 3,
+    //   progressive: true,
+    //   interlaced: true
+    // })))
     .pipe(gulp.dest('dist/images'))
     .pipe($.size());
 });
 
 gulp.task('extras', function () {
-  return gulp.src(['app/*.txt', 'app/*.ico'])
+  return gulp.src(['app/*.txt', 'app/*.json', 'app/*.ico'])
     .pipe(gulp.dest('dist/'))
     .pipe($.size());
 });
@@ -92,7 +92,7 @@ gulp.task('minify:js', function() {
 
 gulp.task('minify:css', function() {
   return gulp.src('dist/styles/**/*.css')
-    .pipe($.minifyCss())
+    .pipe(cleanCSS())
     .pipe(gulp.dest('dist/styles'))
     .pipe($.size());
 });

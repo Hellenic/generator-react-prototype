@@ -1,6 +1,7 @@
 'use strict';
 
 var yeoman = require('yeoman-generator');
+var _ = require('underscore.string');
 
 var ComponentGenerator = yeoman.Base.extend({
   constructor: function() {
@@ -11,11 +12,11 @@ var ComponentGenerator = yeoman.Base.extend({
   },
 
   writing: function() {
-    var componentFileName = this._.slugify(this.componentName);
+    var componentFileName = _.slugify(this.componentName);
 
     this.fs.copyTpl(
       this.templatePath('component.js'),
-      this.destinationPath('app/scripts/components/' + componentFileName + '.js'),
+      this.destinationPath('app/components/' + componentFileName + '.js'),
       this
     );
   }

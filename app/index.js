@@ -14,7 +14,7 @@ var ReactPrototypeGenerator = yeoman.Base.extend({
     var done = this.async();
 
     this.log(yosay(
-      'You\'re using the fantastic #hackteam\'s' + chalk.purple('react-prototype') + ' generator.'
+      'You\'re using the #hackteam\'s fantastic ' + chalk.magenta('react-prototype') + ' generator.'
     ));
 
     var prompts = [{
@@ -56,17 +56,26 @@ var ReactPrototypeGenerator = yeoman.Base.extend({
   },
 
   writing: function() {
+    // Project files
     this._copyTpl('_package.json', 'package.json');
     this._copyTpl('_gulpfile.js', 'gulpfile.js');
     this._copy('gitignore', '.gitignore');
     this._copy('editorconfig', '.editorconfig');
+    this._copy('jshintrc', '.jshintrc');
+    this._copyTpl('README.md', 'README.md');
 
+    // App files
     this._copyTpl('app/index.html', 'app/index.html');
+    this._copy('app/app.js', 'app/app.js');
     this._copy('app/favicon.ico', 'app/favicon.ico');
 
-    this._copyTpl('app/main.less', 'app/styles/main.less');
-    this._copy('app/app.js', 'app/scripts/app.js');
-    this._copyTpl('app/home.js', 'app/scripts/components/home.js');
+    // Rest of the folders
+    this._copy('app/api/', 'app/api/');
+    this._copy('app/components/', 'app/components/');
+    this._copy('app/graphs/', 'app/graphs/');
+    this._copy('app/images/', 'app/images/');
+    this._copy('app/styles/', 'app/styles/');
+    this._copy('app/utils/', 'app/utils/');
   },
 
   _copy: function(from, to) {

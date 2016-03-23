@@ -1,35 +1,53 @@
 {
   "name": "<%= _.slugify(projectName) %>",
-  "version": "0.0.1",
-  "dependencies": {},
+  "version": "0.1.0",
+  "description": "",
+  "homepage": "",
+  "dependencies": {
+    "axios": "^0.9.1",
+    "highcharts": "^4.2.3",
+    "moment": "^2.12.0",
+    "react": "^0.14.7",
+    "react-addons-css-transition-group": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-router": "^2.0.1"
+  },
   "devDependencies": {
-    "babelify": "^6.0.2",
-    "browserify": "^8.1.3",
-    "del": "^1.1.1",
-    "gulp": "^3.8.10",
-    "gulp-autoprefixer": "^2.1.0",
-    "gulp-cache": "^0.2.4",
-    "gulp-imagemin": "^2.1.0",
-    "gulp-load-plugins": "^0.8.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cache": "^0.4.3",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-load-plugins": "^1.2.0",
     "gulp-less": "^3.0.5",
-    "gulp-minify-css": "^0.4.5",
-    "gulp-ruby-sass": "^1.0.0-alpha",
-    "gulp-size": "^1.2.0",
+    "gulp-clean-css": "^2.0.3",
+    "gulp-size": "^2.1.0",
     "gulp-sync": "^0.1.4",
-    "gulp-useref": "^1.1.1",
-    "gulp-uglify": "^1.1.0",
-    "gulp-util": "^3.0.3",
-    "gulp-webserver": "^0.9.0",
-    "react": "^0.13.2",
-    "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.3.0"
+    "gulp-useref": "^3.0.8",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
+    "gulp-webserver": "^0.9.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=5.8.0"
   },
   "browserify": {
     "transform": [
-      "babelify"
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "react"
+          ]
+        }
+      ]
     ]
   }
 }
