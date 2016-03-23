@@ -2,6 +2,15 @@
 
 > [Yeoman](http://yeoman.io) generator for quick prototypes, demos and PoCs. Comes with React, React-Router, Gulp, ES6, Browserify, etc.
 
+This project should help you get started quickly when building
+demos, prototypes or quick proof of concept work around area of
+industrial internet. When you have plethora of APIs and realtime data, you can
+create quick, nice-looking demo around that by using this generator.
+
+It contains only the very necessary: Tools for creating quick and
+nice looking UI with graphs and data. APIs to load data from different sources
+and visualize it with Highcharts. Nothing extra; No tests, no linting whatsoever.
+
 ## Getting Started
 
 ```
@@ -25,13 +34,12 @@ $ gulp serve:production                           # Preview the built production
 
 Bundled:
 
-* React
-* React-Router
-* Gulp
-* Browserify
-* Watchify
-* Babelify
+* React, React-Router
+* Axios, Highcharts, Moment
+* Gulp, Watchify, Browserify, Babelify
 * Less
+* Tools for using some APIs (Cumulocity, Trelab...)
+* Graph components and some icons
 
 Optional:
 

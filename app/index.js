@@ -14,7 +14,7 @@ var ReactPrototypeGenerator = yeoman.Base.extend({
     var done = this.async();
 
     this.log(yosay(
-      'You\'re using the #hackteam\'s fantastic ' + chalk.magenta('react-prototype') + ' generator.'
+      'You\'re using the #hackteam\'s fantastic ' + chalk.bgWhite(chalk.magenta('react-prototype')) + ' generator.'
     ));
 
     var prompts = [{
@@ -61,7 +61,6 @@ var ReactPrototypeGenerator = yeoman.Base.extend({
     this._copyTpl('_gulpfile.js', 'gulpfile.js');
     this._copy('gitignore', '.gitignore');
     this._copy('editorconfig', '.editorconfig');
-    this._copy('jshintrc', '.jshintrc');
     this._copyTpl('README.md', 'README.md');
 
     // App files
