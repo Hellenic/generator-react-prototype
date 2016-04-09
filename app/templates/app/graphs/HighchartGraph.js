@@ -1,7 +1,7 @@
 import React from 'react';
 import Highcharts from 'highcharts';
 
-// Version: 16.3.2016
+// Version: 2016-04-06
 class HighchartsGraph extends React.Component {
 
   componentDidMount() {
@@ -13,11 +13,11 @@ class HighchartsGraph extends React.Component {
     }
 
     // Set container which the chart should render to.
-    this.chart = Highcharts[this.props.type || 'chart'](this.props.container, this.props.options);
+    this.chart = new Highcharts[this.props.type || 'chart'](this.props.container, this.props.options);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    // Re-set all of the series data from options, so that it can be re-drawn
+    // Re-set all of the series data, so that it can be re-drawn
     for (let i=0; i< nextProps.options.series.length; i++)
     {
       if (this.chart.series[i]) {
@@ -30,6 +30,11 @@ class HighchartsGraph extends React.Component {
   }
 
   componentWillUnmount() {
+    // TODO Data still doesn't disappear
+    this.chart.series.forEach(series => {
+      series.remove();
+    });
+    this.chart.series = [];
     this.chart.destroy();
   }
 

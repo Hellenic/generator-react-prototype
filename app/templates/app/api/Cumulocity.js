@@ -6,7 +6,7 @@ var axiosCumulocity = axios.create({
   baseURL: 'https://demo.iot.tieto.com/',
   timeout: 10000,
   headers: {
-    'Authorization': 'Basic #######'
+    'Authorization': 'Basic ####'
   }
 });
 
@@ -24,7 +24,7 @@ class Cumulocity {
     return axiosCumulocity.get(URL);
   }
 
-  static getMeasurementSeries(source, ago, type) {
+  static getMeasurementSeries(source, ago, type, aggregationType) {
     let fromAgo = (ago) ? ago : '2 hours';
     let timeAgoValue = parseInt(fromAgo.split(' ')[0]);
     let timeAgoUnit = fromAgo.split(' ')[1];
@@ -34,24 +34,26 @@ class Cumulocity {
     let timeNow = moment().format(format);
     timeAgo = encodeURIComponent(timeAgo);
     timeNow = encodeURIComponent(timeNow);
-    let URL = `/measurement/measurements/series?source=${source}&dateFrom=${timeAgo}&dateTo=${timeNow}&type=${type}`;
+    let aggregation = (aggregationType) ? `&aggregationType=${aggregationType}` : '';
+    let URL = `/measurement/measurements/series?source=${source}&dateFrom=${timeAgo}&dateTo=${timeNow}&type=${type}${aggregation}`;
 
     return axiosCumulocity.get(URL);
   }
 
-  static convertSeries2series(name, type, yAxis, dataArray) {
+  static convertSeries2series(name, chartType, yAxis, dataType, dataArray) {
 
+    let typeIndex = Math.max(dataArray.series.findIndex(item => { return item.type === dataType }), 0);
     let seriesData = Object.keys(dataArray.values).map(key => {
-      let value = dataArray.values[key];
-      let temperature = (value[0]) ? value[0].max : 0
+      let values = dataArray.values[key];
+      let typeValue = (values[typeIndex]) ? values[typeIndex].max : 0
       let time = moment(key);
 
-      return [ time.valueOf(), temperature ];
+      return [ time.valueOf(), typeValue ];
     });
 
     return {
       name: name,
-      type: type,
+      type: chartType,
       yAxis: yAxis,
       data: seriesData
     };

@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import Graph from './HighchartGraph';
 import CumulocityAPI from '../api/Cumulocity';
 
+// Version: 2016-04-06
 class CumulocityGraph extends Component {
 
   constructor(props) {
@@ -16,11 +17,22 @@ class CumulocityGraph extends Component {
 
     let options = this.state.options;
 
+    // For each defined graph, make a call to Cumulocity for data
     this.props.graphs.forEach(graph => {
-      CumulocityAPI.getMeasurementSeries(graph.sourceId, graph.fromAgo, graph.type).then(response => {
+      CumulocityAPI.getMeasurementSeries(graph.sourceId, graph.fromAgo, graph.type, graph.aggregationType).then(response => {
 
-        let series = CumulocityAPI.convertSeries2series(graph.name, graph.chartType, graph.yAxis, response.data);
-        options.series.push(CumulocityAPI.aggregate(series, 32));
+        // Convert data for Highcharts
+        let series = CumulocityAPI.convertSeries2series(graph.name, graph.chartType, graph.yAxis, graph.type, response.data);
+
+        // Send received data to parent for other purposes
+        this.props.onData({ sourceId: graph.sourceId, name: graph.name, series: series });
+
+        if (graph.aggregate)
+        {
+          series = CumulocityAPI.aggregate(series, 12);
+        }
+
+        options.series.push(series);
 
         this.setState({
           options: options,
@@ -54,7 +66,8 @@ class CumulocityGraph extends Component {
 CumulocityGraph.defaultProps = {
   containerName: '',
   options: {},
-  graphs: []
+  graphs: [],
+  onData: () => {}
 };
 
 export default CumulocityGraph;

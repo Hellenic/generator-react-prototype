@@ -1,6 +1,6 @@
 {
   "name": "generator-react-prototype",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Yeoman Generator generator for quick prototypes, demos and PoCs. Comes with React, React-Router, Gulp, ES6, Browserify, etc.",
   "license": "MIT",
   "main": "app/index.js",
