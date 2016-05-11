@@ -4,7 +4,7 @@ import axios from 'axios';
 
 var axiosCumulocity = axios.create({
   baseURL: 'https://demo.iot.tieto.com/',
-  timeout: 10000,
+  timeout: 180000,
   headers: {
     'Authorization': 'Basic ####'
   }
@@ -60,29 +60,58 @@ class Cumulocity {
   }
 
   static aggregate(series, amount) {
-      let aggregated = []
-      let temporary = [];
+    let aggregated = []
+    let temporary = [];
 
-      series.data.forEach(m => {
-        temporary.push(m);
+    series.data.forEach(m => {
+      temporary.push(m);
 
-        if (temporary.length > amount)
-        {
+      if (temporary.length > amount)
+      {
 
-          let sum = 0;
-          temporary.forEach(temp => {
-            sum += temp[1];
-          });
-          let avg = sum / temporary.length;
-          let time = temporary[0][0];
-          aggregated.push([ time, avg ]);
-          temporary = [];
-        }
-      });
+        let sum = 0;
+        temporary.forEach(temp => {
+          sum += temp[1];
+        });
+        let avg = sum / temporary.length;
+        let time = temporary[0][0];
+        aggregated.push([ time, avg ]);
+        temporary = [];
+      }
+    });
 
-      series.data = aggregated;
-      return series;
-    }
+    series.data = aggregated;
+    return series;
+  }
+
+  static handshake() {
+    let data = [{
+      "version":"1.0",
+      "minimumVersion":"0.9",
+      "channel":"/meta/handshake",
+      "supportedConnectionTypes":["long-polling"],
+      "advice":{
+        "timeout":180000,"interval":0
+      }
+    }];
+    return axiosCumulocity.post('/cep/realtime', data);
+  }
+  static subscribe(clientId, deviceId) {
+    let data = [{
+      "channel":"/meta/subscribe",
+      "subscription":`/alarms/${deviceId}`,
+      "clientId":`${clientId}`
+    }];
+    return axiosCumulocity.post('/cep/realtime', data);
+  }
+  static poll(clientId) {
+    let data = [{
+      "channel":"/meta/connect",
+      "connectionType":"long-polling",
+      "clientId":`${clientId}`
+    }];
+    return axiosCumulocity.post('/cep/realtime', data, {timeout: 0});
+  }
 }
 
 export default Cumulocity;
